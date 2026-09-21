@@ -1,5 +1,3 @@
-import { defaultCharacter } from "../data/cosmetics.js";
-import { LEVELS } from "../data/levels.js";
 
 const SAVE_KEY = "perfectCatchSave_v1";
 
@@ -118,4 +116,4 @@ class GameState {
   }
 }
 
-export const gameState = new GameState();
+const gameState = new GameState();

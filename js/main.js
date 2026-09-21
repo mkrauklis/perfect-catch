@@ -1,9 +1,3 @@
-import { Game, CANVAS_W, CANVAS_H } from "./engine/Game.js";
-import { MenuScene } from "./scenes/MenuScene.js";
-import { CharacterCreatorScene } from "./scenes/CharacterCreatorScene.js";
-import { TackleBoxScene } from "./scenes/TackleBoxScene.js";
-import { LevelSelectScene } from "./scenes/LevelSelectScene.js";
-import { FishingScene } from "./scenes/FishingScene.js";
 
 Game.sm.register("menu", MenuScene);
 Game.sm.register("character", CharacterCreatorScene);

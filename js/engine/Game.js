@@ -1,9 +1,8 @@
-import { gameState } from "./GameState.js";
 
-export const CANVAS_W = 760;
-export const CANVAS_H = 560;
+const CANVAS_W = 760;
+const CANVAS_H = 560;
 
-export function el(tag, attrs = {}, children = []) {
+function el(tag, attrs = {}, children = []) {
   const node = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs)) {
     if (k === "class") node.className = v;
@@ -45,7 +44,7 @@ class SceneManager {
   }
 }
 
-export const Game = {
+const Game = {
   p: null,
   sm: new SceneManager(),
   state: gameState,

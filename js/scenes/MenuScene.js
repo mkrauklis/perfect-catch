@@ -1,11 +1,7 @@
-import { el, CANVAS_W, CANVAS_H } from "../engine/Game.js";
-import { drawScene } from "../ui/backgrounds.js";
-import { drawAngler } from "../entities/Angler.js";
-import { LEVELS } from "../data/levels.js";
 
 const pondTheme = { sky: ["#7fb8c9", "#cfe8d8"], water: ["#3a7d6b", "#1f4d42"], accent: "#e0a940", decor: "lilypads" };
 
-export const MenuScene = {
+const MenuScene = {
   enter(Game) {
     const s = Game.state.data;
     const nextUp = LEVELS.find((l) => Game.state.isLevelUnlocked(l.id) && !Game.state.data.bestCatches[l.id]) || LEVELS[0];

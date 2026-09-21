@@ -1,7 +1,7 @@
 // maxStamina, aggression (0-1, chance/strength of runs), minWeight/maxWeight (kg),
 // value ($ per kg), bodyColor/finColor for procedural drawing, giant (bool, scales up rendering).
 
-export const FISH_SPECIES = {
+const FISH_SPECIES = {
   pond: [
     { id: "sunfish", name: "Sunfish", maxStamina: 35, aggression: 0.15, minWeight: 0.2, maxWeight: 0.6, value: 12, bodyColor: "#e0a940", finColor: "#c9862c" },
     { id: "bass", name: "Largemouth Bass", maxStamina: 50, aggression: 0.25, minWeight: 0.8, maxWeight: 2.2, value: 15, bodyColor: "#4a6b3a", finColor: "#33492a" },
@@ -21,7 +21,7 @@ export const FISH_SPECIES = {
   ],
 };
 
-export function pickFish(levelId, rng) {
+function pickFish(levelId, rng) {
   const pool = FISH_SPECIES[levelId];
   const species = pool[Math.floor(rng() * pool.length)];
   const weight = species.minWeight + rng() * (species.maxWeight - species.minWeight);

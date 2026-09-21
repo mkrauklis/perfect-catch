@@ -1,11 +1,3 @@
-import { el, CANVAS_W, CANVAS_H } from "../engine/Game.js";
-import { drawScene } from "../ui/backgrounds.js";
-import { drawAngler } from "../entities/Angler.js";
-import {
-  SKIN_TONES, HAIR_COLORS, OUTFIT_COLORS, HAIR_STYLES, OUTFIT_STYLES,
-  HATS, SUNGLASSES, ACCESSORIES, BODY_TYPES,
-} from "../data/cosmetics.js";
-
 const previewTheme = { sky: ["#5f7f95", "#c9d8c2"], water: ["#2c4c58", "#16292f"], accent: "#3fb6a8", decor: "rocks" };
 
 function label(str) {
@@ -40,7 +32,7 @@ function chipRow(options, current, onPick) {
   );
 }
 
-export const CharacterCreatorScene = {
+const CharacterCreatorScene = {
   enter(Game) {
     this.render(Game);
   },

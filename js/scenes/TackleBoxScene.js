@@ -1,7 +1,3 @@
-import { el, CANVAS_W, CANVAS_H } from "../engine/Game.js";
-import { drawScene } from "../ui/backgrounds.js";
-import { drawAngler } from "../entities/Angler.js";
-import { RODS, REELS, LURES, getGearById } from "../data/gear.js";
 
 const theme = { sky: ["#6f8494", "#c7cdb8"], water: ["#33474f", "#1a262b"], accent: "#e0a940", decor: "rocks" };
 
@@ -47,7 +43,7 @@ function gearSection(Game, title, list, kind, equippedKey, rerender) {
   return [el("h3", {}, title), ...cards];
 }
 
-export const TackleBoxScene = {
+const TackleBoxScene = {
   enter(Game) {
     this.render(Game);
   },

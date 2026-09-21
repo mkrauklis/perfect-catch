@@ -41,7 +41,19 @@ p5.js primitives, so any cosmetic or species combination just renders.
 # Architecture
 
 No build step, no bundler. `index.html` loads p5.js, Acorn, and CodeMirror 5
-from cdnjs, then `js/main.js` as an ES module.
+from cdnjs, then every `js/**/*.js` file as a **classic script** (`<script
+src="...">`, no `type="module"`) in dependency order, ending with
+`js/main.js`. This is deliberate, matching the convention already used by
+this machine's other p5 projects (e.g. `null-island`): `import`/`export` ES
+modules refuse to load over a `file://` URL (the browser treats it as a
+CORS-blocked opaque origin), so double-clicking `index.html` would show a
+blank page. Classic `<script src>` tags don't have that restriction — they
+load fine over `file://` — so the game can be opened directly with no local
+server. All top-level `const`/`function`/`class` declarations across the
+`js/` tree share one global scope instead of module exports; there is
+**no import/export anywhere in `js/`** — if you add a new file, add its
+`<script>` tag to `index.html` in the right dependency position (see the
+list there) rather than reaching for `import`.
 
 ```
 index.html

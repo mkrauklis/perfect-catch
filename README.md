@@ -17,11 +17,12 @@ Box on better rods, reels, and lures.
 
 ## Running it locally
 
-This is plain HTML/CSS/JS loaded as ES modules, so it needs to be served over
-`http://`, not opened as a `file://` URL (double-clicking `index.html`, or
-pasting its path into a browser's address bar, won't work — the browser
-blocks module scripts from loading over `file://`, and you'll get a blank
-page with just the nav bar). Any static file server works:
+Just double-click `index.html`. It's plain HTML/CSS/JS loaded as classic
+`<script>` tags (deliberately not ES modules, which browsers refuse to load
+over `file://`), so no build step and no local server are required.
+
+If you'd rather serve it over `http://` (e.g. to test from another device
+on your network), any static file server works:
 
 ```bash
 python -m http.server 5173

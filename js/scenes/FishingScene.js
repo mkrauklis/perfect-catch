@@ -1,11 +1,3 @@
-import { el, CANVAS_W, CANVAS_H } from "../engine/Game.js";
-import { drawScene } from "../ui/backgrounds.js";
-import { drawAngler } from "../entities/Angler.js";
-import { drawFish } from "../entities/FishSprite.js";
-import { getLevel, nextLevel } from "../data/levels.js";
-import { createSimulation } from "../engine/Simulation.js";
-import { runCode } from "../engine/CodeRunner.js";
-import { getGearById, RODS } from "../data/gear.js";
 
 const CONCEPT_BADGES = [
   { key: "variables", label: "Variables" },
@@ -25,7 +17,7 @@ function failCaption(phase) {
   return "Your script finished without landing the fish. Call land() once it's tired (low stamina) and close (low line out).";
 }
 
-export const FishingScene = {
+const FishingScene = {
   enter(Game, payload) {
     this.Game = Game;
     this.level = getLevel(payload.levelId);

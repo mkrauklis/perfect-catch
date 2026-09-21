@@ -1,5 +1,5 @@
 // Procedurally draws a fish. angle in radians (0 = swimming right).
-export function drawFish(p, x, y, angle, sizeScale, species, opts = {}) {
+function drawFish(p, x, y, angle, sizeScale, species, opts = {}) {
   if (!species) return;
   const giant = !!species.giant;
   const base = (giant ? 26 : 16) * sizeScale;

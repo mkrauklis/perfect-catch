@@ -1,4 +1,3 @@
-import { FightEndSignal } from "./Simulation.js";
 
 const MAX_LOOP_ITERATIONS = 20000;
 
@@ -16,7 +15,7 @@ function walk(node, visit) {
   }
 }
 
-export function analyzeConcepts(ast) {
+function analyzeConcepts(ast) {
   const found = { variables: false, conditionals: false, loops: false, functions: false, calls: false };
   walk(ast, (node) => {
     if (node.type === "VariableDeclaration") found.variables = true;
@@ -52,7 +51,7 @@ function instrumentLoops(code, ast) {
 // Executes untrusted user code against a fishing-simulation API.
 // Loops are instrumented with an iteration guard so a runaway while/for
 // can't hang the tab; it throws a friendly, catchable error instead.
-export function runCode(code, api) {
+function runCode(code, api) {
   let ast;
   try {
     ast = window.acorn.parse(code, { ecmaVersion: 2020 });

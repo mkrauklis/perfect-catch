@@ -1,8 +1,5 @@
-import { el, CANVAS_W, CANVAS_H } from "../engine/Game.js";
-import { drawScene } from "../ui/backgrounds.js";
-import { LEVELS } from "../data/levels.js";
 
-export const LevelSelectScene = {
+const LevelSelectScene = {
   enter(Game) {
     const s = Game.state;
     const cards = LEVELS.map((lvl) => {

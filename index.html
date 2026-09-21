@@ -41,6 +41,27 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/acorn/8.11.3/acorn.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
-<script type="module" src="js/main.js"></script>
+
+<!-- Plain classic scripts, not ES modules, on purpose: this lets the game
+     run by double-clicking index.html (file://) with no local server, the
+     same as this repo's other p5 projects. Order matters — each file below
+     depends only on files loaded before it. -->
+<script src="js/data/cosmetics.js"></script>
+<script src="js/data/gear.js"></script>
+<script src="js/data/fish.js"></script>
+<script src="js/data/levels.js"></script>
+<script src="js/engine/GameState.js"></script>
+<script src="js/engine/Simulation.js"></script>
+<script src="js/engine/CodeRunner.js"></script>
+<script src="js/engine/Game.js"></script>
+<script src="js/entities/Angler.js"></script>
+<script src="js/entities/FishSprite.js"></script>
+<script src="js/ui/backgrounds.js"></script>
+<script src="js/scenes/MenuScene.js"></script>
+<script src="js/scenes/CharacterCreatorScene.js"></script>
+<script src="js/scenes/TackleBoxScene.js"></script>
+<script src="js/scenes/LevelSelectScene.js"></script>
+<script src="js/scenes/FishingScene.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

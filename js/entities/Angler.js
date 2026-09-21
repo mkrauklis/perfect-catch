@@ -7,7 +7,7 @@ function bodyWidthFor(bodyType) {
   return 1.0;
 }
 
-export function drawAngler(p, x, y, scale, character, opts = {}) {
+function drawAngler(p, x, y, scale, character, opts = {}) {
   const { facing = 1, rodBendDeg = 0 } = opts;
   const s = scale;
   const wMul = bodyWidthFor(character.bodyType);

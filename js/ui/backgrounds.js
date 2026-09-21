@@ -1,7 +1,7 @@
 // Shared procedural environment renderer, reused by the menu and every
 // fishing adventure. `theme` comes from js/data/levels.js envTheme.
 
-export function drawScene(p, w, h, theme, t) {
+function drawScene(p, w, h, theme, t) {
   const horizon = h * 0.42;
 
   // sky

@@ -1,4 +1,4 @@
-export const LEVELS = [
+const LEVELS = [
   {
     id: "pond",
     order: 0,
@@ -200,11 +200,11 @@ while (!isLanded() && !isDone()) {
   },
 ];
 
-export function getLevel(id) {
+function getLevel(id) {
   return LEVELS.find((l) => l.id === id);
 }
 
-export function nextLevel(id) {
+function nextLevel(id) {
   const cur = getLevel(id);
   return LEVELS.find((l) => l.order === cur.order + 1) || null;
 }

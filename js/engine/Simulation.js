@@ -1,7 +1,5 @@
-import { pickFish } from "../data/fish.js";
-import { getGearById, RODS, REELS, LURES } from "../data/gear.js";
 
-export class FightEndSignal extends Error {
+class FightEndSignal extends Error {
   constructor(reason) {
     super(reason);
     this.name = "FightEndSignal";
@@ -23,7 +21,7 @@ function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
 // Builds a fresh simulation for one fishing attempt. Returns { state, api }.
 // `state.log` accumulates a replay-friendly event list consumed by FishingScene.
-export function createSimulation({ level, equipped, seed }) {
+function createSimulation({ level, equipped, seed }) {
   const rng = mulberry32(seed);
   const rod = getGearById(RODS, equipped.rod);
   const reel = getGearById(REELS, equipped.reel);
