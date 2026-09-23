@@ -19,8 +19,8 @@ const BODY_TYPES = ["A", "B", "C"];
 function defaultCharacter() {
   return {
     skinTone: SKIN_TONES[1],
-    hairColor: HAIR_COLORS[0],
-    hairStyle: "short",
+    hairColor: HAIR_COLORS[1],
+    hairStyle: "long",
     outfitColor: OUTFIT_COLORS[0],
     outfitStyle: "vest",
     hat: "none",

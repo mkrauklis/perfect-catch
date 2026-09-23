@@ -257,7 +257,7 @@ const FishingScene = {
     const feetY = anglerY + 56 * anglerScale;
     const deckH = 16;
     const deckTopY = feetY - 6;
-    const waterY = feetY + 12;
+    const waterY = feetY + 45;
     const deckW = 210;
     const deckX = anglerX - 90;
     p.noStroke();
