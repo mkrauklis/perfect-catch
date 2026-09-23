@@ -5,17 +5,17 @@
 // lineCapacity   - max lineOut before it's simply clamped
 
 const RODS = [
-  { id: "cane", name: "Cane Pole", price: 0, tensionBreak: 70, dragSmoothness: 1.0, desc: "A humble bamboo pole. Forgiving, but weak." },
-  { id: "river_rod", name: "River Rod", price: 150, tensionBreak: 80, dragSmoothness: 1.15, desc: "Fiberglass rod with real backbone." },
-  { id: "graphite_pro", name: "Graphite Pro", price: 450, tensionBreak: 105, dragSmoothness: 1.3, desc: "Light, stiff, sensitive to every tap." },
-  { id: "big_game", name: "Big Game Rod", price: 1400, tensionBreak: 150, dragSmoothness: 1.5, desc: "Built to survive a sea monster." },
+  { id: "cane", name: "Cane Pole", price: 0, tensionBreak: 70, dragSmoothness: 1.0, color: "#c9a227", desc: "A humble bamboo pole. Forgiving, but weak." },
+  { id: "river_rod", name: "River Rod", price: 150, tensionBreak: 80, dragSmoothness: 1.15, color: "#2e86de", desc: "Fiberglass rod with real backbone." },
+  { id: "graphite_pro", name: "Graphite Pro", price: 450, tensionBreak: 105, dragSmoothness: 1.3, color: "#9b59b6", desc: "Light, stiff, sensitive to every tap." },
+  { id: "big_game", name: "Big Game Rod", price: 1400, tensionBreak: 150, dragSmoothness: 1.5, color: "#e74c3c", desc: "Built to survive a sea monster." },
 ];
 
 const REELS = [
-  { id: "spincast", name: "Basic Spincast", price: 0, reelEfficiency: 1.0, dragSmoothness: 1.0, lineCapacity: 40, desc: "Simple, reliable, a little clunky." },
-  { id: "baitcast", name: "Smooth Baitcaster", price: 220, reelEfficiency: 1.25, dragSmoothness: 1.2, lineCapacity: 60, desc: "Precise drag control, less tension shock." },
-  { id: "offshore", name: "Offshore Conventional", price: 950, reelEfficiency: 1.5, dragSmoothness: 1.35, lineCapacity: 120, desc: "Built for line-ripping runs." },
-  { id: "giant_slayer", name: "Giant Slayer", price: 2200, reelEfficiency: 1.8, dragSmoothness: 1.6, lineCapacity: 200, desc: "The reel of choice for giants." },
+  { id: "spincast", name: "Basic Spincast", price: 0, reelEfficiency: 1.0, dragSmoothness: 1.0, lineCapacity: 40, color: "#8a8f99", desc: "Simple, reliable, a little clunky." },
+  { id: "baitcast", name: "Smooth Baitcaster", price: 220, reelEfficiency: 1.25, dragSmoothness: 1.2, lineCapacity: 60, color: "#2e86de", desc: "Precise drag control, less tension shock." },
+  { id: "offshore", name: "Offshore Conventional", price: 950, reelEfficiency: 1.5, dragSmoothness: 1.35, lineCapacity: 120, color: "#27ae60", desc: "Built for line-ripping runs." },
+  { id: "giant_slayer", name: "Giant Slayer", price: 2200, reelEfficiency: 1.8, dragSmoothness: 1.6, lineCapacity: 200, color: "#f1c40f", desc: "The reel of choice for giants." },
 ];
 
 const LURES = [

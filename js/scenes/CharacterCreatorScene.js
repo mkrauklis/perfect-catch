@@ -81,6 +81,9 @@ const CharacterCreatorScene = {
   draw(Game, p) {
     drawScene(p, CANVAS_W, CANVAS_H, previewTheme, p.frameCount / 60);
     const c = Game.state.data.character;
-    drawAngler(p, CANVAS_W * 0.5, CANVAS_H * 0.68, 4.4, c, { facing: 1 });
+    const eq = Game.state.data.equipped;
+    const rod = getGearById(RODS, eq.rod);
+    const reel = getGearById(REELS, eq.reel);
+    drawAngler(p, CANVAS_W * 0.5, CANVAS_H * 0.68, 4.4, c, { facing: 1, rodColor: rod.color, reelColor: reel.color });
   },
 };

@@ -69,7 +69,7 @@ const TackleBoxScene = {
     const reel = getGearById(REELS, eq.reel);
     const lure = getGearById(LURES, eq.lure);
 
-    const rodTip = drawAngler(p, CANVAS_W * 0.35, CANVAS_H * 0.68, 3.4, c, { facing: 1 });
+    const rodTip = drawAngler(p, CANVAS_W * 0.35, CANVAS_H * 0.68, 3.4, c, { facing: 1, rodColor: rod.color, reelColor: reel.color });
 
     // line from the rod tip out to a bobber, purely decorative
     const bobberX = CANVAS_W * 0.72;

@@ -22,6 +22,7 @@ const FishingScene = {
     this.Game = Game;
     this.level = getLevel(payload.levelId);
     this.rod = getGearById(RODS, Game.state.data.equipped.rod);
+    this.reel = getGearById(REELS, Game.state.data.equipped.reel);
     this.log = [];
     this.replayIndex = 0;
     this.playing = false;
@@ -32,6 +33,8 @@ const FishingScene = {
     this.currentSnapshot = { tension: 0, drag: 25, lineOut: 0, fishStaminaPct: 100, phase: "idle" };
     this.currentFishSpecies = null;
     this.wiggle = 0;
+    this.castAnim = null;
+    this.castAnimDuration = 550;
 
     this.buildPanel(Game);
   },
@@ -132,6 +135,7 @@ const FishingScene = {
     this.lastStepAt = performance.now();
     this.currentFishSpecies = sim.state.fish;
     this.wiggle = 0;
+    this.castAnim = null;
 
     this.consoleOut.innerHTML = "";
     this.resultBox.style.display = "none";
@@ -159,6 +163,7 @@ const FishingScene = {
 
   skipAnimation() {
     if (!this.playing) return;
+    this.castAnim = null;
     while (this.replayIndex < this.log.length) this.advanceStep();
     this.finishPlayback();
   },
@@ -168,6 +173,9 @@ const FishingScene = {
     this.replayIndex++;
     this.currentSnapshot = entry.snapshot;
     this.wiggle += 1;
+    if (entry.type === "cast") {
+      this.castAnim = { start: performance.now() };
+    }
     const cls = entry.type === "snap" || entry.type === "timeout" ? "err" : entry.type === "user_log" ? "sys" : "";
     this.logLine(entry.caption || entry.type, cls);
     if (this.tensionBarInner) {
@@ -222,7 +230,18 @@ const FishingScene = {
   draw(Game, p) {
     drawScene(p, CANVAS_W, CANVAS_H, this.level.envTheme, p.frameCount / 60);
 
-    if (this.playing && performance.now() - this.lastStepAt >= this.stepMs) {
+    let castProgress = null;
+    if (this.castAnim) {
+      const elapsed = performance.now() - this.castAnim.start;
+      if (elapsed >= this.castAnimDuration) {
+        this.castAnim = null;
+        this.lastStepAt = performance.now();
+      } else {
+        castProgress = elapsed / this.castAnimDuration;
+      }
+    }
+
+    if (this.playing && !this.castAnim && performance.now() - this.lastStepAt >= this.stepMs) {
       this.lastStepAt = performance.now();
       this.advanceStep();
       if (this.replayIndex >= this.log.length) this.finishPlayback();
@@ -230,29 +249,56 @@ const FishingScene = {
 
     const snap = this.currentSnapshot;
     const anglerX = CANVAS_W * 0.22;
-    const anglerY = CANVAS_H * 0.66;
+    const anglerY = CANVAS_H * 0.56;
+    const anglerScale = 3.0;
 
-    // dock/shore
+    // dock: planked deck (right at the angler's feet) + support posts
+    // standing down in the water below it
+    const feetY = anglerY + 56 * anglerScale;
+    const deckH = 16;
+    const deckTopY = feetY - 6;
+    const waterY = feetY + 12;
+    const deckW = 210;
+    const deckX = anglerX - 90;
     p.noStroke();
-    if (this.level.id === "pond") {
-      p.fill(90, 70, 45);
-      p.ellipse(anglerX, anglerY + 44, 140, 26);
-    } else {
-      p.fill(70, 55, 40);
-      p.rect(anglerX - 70, anglerY + 30, 150, 18, 3);
+    p.fill(40, 32, 22);
+    for (const px of [deckX + 14, deckX + deckW * 0.45, deckX + deckW - 14]) {
+      p.rect(px - 5, deckTopY + deckH - 4, 10, CANVAS_H - (deckTopY + deckH - 4), 2);
     }
+    p.fill(96, 72, 46);
+    p.rect(deckX, deckTopY, deckW, deckH, 3);
+    p.stroke(60, 44, 28);
+    p.strokeWeight(1.5);
+    for (let i = 1; i < 8; i++) {
+      const lx = deckX + (deckW / 8) * i;
+      p.line(lx, deckTopY + 1, lx, deckTopY + deckH - 1);
+    }
+    p.noStroke();
 
     const tensionPct = this.rod ? Math.min(1, snap.tension / this.rod.tensionBreak) : 0;
     const bendDeg = tensionPct * 60;
+    const castSwingDeg = castProgress !== null ? -30 * (1 - castProgress) : 0;
 
     const c = Game.state.data.character;
-    const rodTip = drawAngler(p, anglerX, anglerY, 3.0, c, { facing: 1, rodBendDeg: bendDeg });
+    const rodTip = drawAngler(p, anglerX, anglerY, anglerScale, c, {
+      facing: 1,
+      rodBendDeg: bendDeg,
+      castSwingDeg,
+      rodColor: this.rod ? this.rod.color : undefined,
+      reelColor: this.reel ? this.reel.color : undefined,
+    });
 
     // fish position from lineOut
     const maxRef = this.level.castDistanceRange[1] * 1.2;
     const distNorm = Math.max(0, Math.min(1, snap.lineOut / maxRef));
-    const fishX = anglerX + 50 + distNorm * (CANVAS_W - anglerX - 110);
-    const fishY = CANVAS_H * 0.6 + Math.sin(this.wiggle * 0.6) * 6;
+    let fishX = anglerX + 50 + distNorm * (CANVAS_W - anglerX - 110);
+    let fishY = waterY + Math.sin(this.wiggle * 0.6) * 6;
+
+    if (castProgress !== null) {
+      const t = castProgress;
+      fishX = p.lerp(rodTip.x, fishX, t);
+      fishY = p.lerp(rodTip.y, fishY, t) - Math.sin(t * Math.PI) * 40;
+    }
 
     // fishing line
     p.stroke(255, 255, 255, 210);
@@ -262,7 +308,10 @@ const FishingScene = {
     }
     p.noStroke();
 
-    if (snap.phase === "fighting" || snap.phase === "landed") {
+    if (castProgress !== null) {
+      p.fill(224, 169, 64);
+      p.circle(fishX, fishY, 8);
+    } else if (snap.phase === "fighting" || snap.phase === "landed") {
       drawFish(p, fishX, fishY, Math.PI, 1.0 + tensionPct * 0.3, this.currentFishSpecies, { wiggle: this.wiggle });
     } else if (snap.phase === "waiting") {
       p.fill(224, 169, 64);

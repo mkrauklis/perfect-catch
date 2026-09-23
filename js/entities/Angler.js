@@ -17,7 +17,7 @@ function dirFromAngle(p, thetaDeg, len) {
 }
 
 function drawAngler(p, x, y, scale, character, opts = {}) {
-  const { facing = 1, rodBendDeg = 0 } = opts;
+  const { facing = 1, rodBendDeg = 0, castSwingDeg = 0, rodColor = "#c9a227", reelColor = "#8a8f99" } = opts;
   const s = scale;
   const wMul = bodyWidthFor(character.bodyType);
 
@@ -62,7 +62,7 @@ function drawAngler(p, x, y, scale, character, opts = {}) {
   // climbs, the whole arm dips a little and the rod tip dips a lot, so the
   // rod visibly bows under load.
   const shoulder = { x: torsoW / 2 + 2 * s, y: 4 * s };
-  const armAngle = -78 + rodBendDeg * 0.25;
+  const armAngle = -78 + rodBendDeg * 0.25 + castSwingDeg;
   const handLen = 18 * s;
   p.push();
   p.translate(shoulder.x, shoulder.y);
@@ -83,13 +83,29 @@ function drawAngler(p, x, y, scale, character, opts = {}) {
   const c1 = { x: hand.x + c1Offset.x, y: hand.y + c1Offset.y };
   const c2 = { x: tip.x - c2Offset.x, y: tip.y - c2Offset.y };
 
-  p.fill(30, 26, 22);
-  p.circle(hand.x, hand.y, 7 * s);
+  // rod shaft — the player's rod color, with a thin glossy highlight
   p.noFill();
-  p.stroke(60, 44, 30);
-  p.strokeWeight(Math.max(1, 2.6 * s));
+  p.stroke(rodColor);
+  p.strokeWeight(Math.max(1, 2.8 * s));
+  p.bezier(hand.x, hand.y, c1.x, c1.y, c2.x, c2.y, tip.x, tip.y);
+  p.stroke(255, 255, 255, 130);
+  p.strokeWeight(Math.max(0.6, 0.9 * s));
   p.bezier(hand.x, hand.y, c1.x, c1.y, c2.x, c2.y, tip.x, tip.y);
   p.noStroke();
+
+  // reel — a colored drum with a little crank, at the grip
+  p.fill(reelColor);
+  p.circle(hand.x, hand.y, 8.5 * s);
+  p.fill(255, 255, 255, 90);
+  p.circle(hand.x - s, hand.y - s, 3.4 * s);
+  const crankOffset = dirFromAngle(p, armAngle + 130, 5 * s);
+  const crankTip = { x: hand.x + crankOffset.x, y: hand.y + crankOffset.y };
+  p.stroke(reelColor);
+  p.strokeWeight(Math.max(1, 1.3 * s));
+  p.line(hand.x, hand.y, crankTip.x, crankTip.y);
+  p.noStroke();
+  p.fill(255, 255, 255, 220);
+  p.circle(crankTip.x, crankTip.y, 2.6 * s);
 
   // neck + head
   p.fill(character.skinTone);
