@@ -69,17 +69,17 @@ const TackleBoxScene = {
     const reel = getGearById(REELS, eq.reel);
     const lure = getGearById(LURES, eq.lure);
 
-    drawAngler(p, CANVAS_W * 0.35, CANVAS_H * 0.68, 3.4, c, { facing: 1 });
+    const rodTip = drawAngler(p, CANVAS_W * 0.35, CANVAS_H * 0.68, 3.4, c, { facing: 1 });
 
-    // simple rod line from hand out to a bobber, purely decorative
+    // line from the rod tip out to a bobber, purely decorative
+    const bobberX = CANVAS_W * 0.72;
+    const bobberY = CANVAS_H * 0.58;
     p.stroke(255, 255, 255, 180);
     p.strokeWeight(1.5);
-    const handX = CANVAS_W * 0.35 - 40;
-    const handY = CANVAS_H * 0.68 - 40;
-    p.line(handX, handY, CANVAS_W * 0.72, CANVAS_H * 0.58);
+    p.line(rodTip.x, rodTip.y, bobberX, bobberY);
     p.noStroke();
     p.fill(224, 169, 64);
-    p.circle(CANVAS_W * 0.72, CANVAS_H * 0.58, 10);
+    p.circle(bobberX, bobberY, 10);
 
     p.fill(255, 255, 255, 230);
     p.textAlign(p.LEFT, p.TOP);

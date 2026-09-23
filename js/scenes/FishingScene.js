@@ -246,7 +246,7 @@ const FishingScene = {
     const bendDeg = tensionPct * 60;
 
     const c = Game.state.data.character;
-    drawAngler(p, anglerX, anglerY, 3.0, c, { facing: 1, rodBendDeg: bendDeg });
+    const rodTip = drawAngler(p, anglerX, anglerY, 3.0, c, { facing: 1, rodBendDeg: bendDeg });
 
     // fish position from lineOut
     const maxRef = this.level.castDistanceRange[1] * 1.2;
@@ -255,14 +255,10 @@ const FishingScene = {
     const fishY = CANVAS_H * 0.6 + Math.sin(this.wiggle * 0.6) * 6;
 
     // fishing line
-    const rodTipX = anglerX - 26;
-    const rodTipY = anglerY - 46 - bendDeg * 0.3;
     p.stroke(255, 255, 255, 210);
     p.strokeWeight(1.5);
     if (snap.phase === "fighting" || snap.phase === "waiting") {
-      p.line(rodTipX, rodTipY, fishX, fishY);
-    } else if (snap.phase === "idle") {
-      // no line yet
+      p.line(rodTip.x, rodTip.y, fishX, fishY);
     }
     p.noStroke();
 

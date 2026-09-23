@@ -7,6 +7,15 @@ function bodyWidthFor(bodyType) {
   return 1.0;
 }
 
+// p5's rotate() is a standard rotation matrix applied to a Y-down canvas,
+// so a point at local (0, len) after rotate(thetaDeg) lands at this offset
+// from the rotation's origin. Used to hand-place the rod without relying on
+// the matrix stack once we're back in the caller's coordinate space.
+function dirFromAngle(p, thetaDeg, len) {
+  const r = p.radians(thetaDeg);
+  return { x: -Math.sin(r) * len, y: Math.cos(r) * len };
+}
+
 function drawAngler(p, x, y, scale, character, opts = {}) {
   const { facing = 1, rodBendDeg = 0 } = opts;
   const s = scale;
@@ -41,18 +50,46 @@ function drawAngler(p, x, y, scale, character, opts = {}) {
     p.rect(-torsoW / 2 + 4 * s, 2 * s, torsoW - 8 * s, 26 * s, 4 * s);
   }
 
-  // arms
+  // back arm (the one NOT holding the rod) — a relaxed resting pose
   p.fill(character.skinTone);
   p.push();
   p.translate(-torsoW / 2 - 2 * s, 4 * s);
-  p.rotate(p.radians(20 + rodBendDeg * 0.15));
+  p.rotate(p.radians(20));
   p.rect(-4 * s, 0, 8 * s, 22 * s, 4 * s);
   p.pop();
+
+  // front arm — holds the rod, raised into a casting stance. As tension
+  // climbs, the whole arm dips a little and the rod tip dips a lot, so the
+  // rod visibly bows under load.
+  const shoulder = { x: torsoW / 2 + 2 * s, y: 4 * s };
+  const armAngle = -78 + rodBendDeg * 0.25;
+  const handLen = 18 * s;
   p.push();
-  p.translate(torsoW / 2 + 2 * s, 4 * s);
-  p.rotate(p.radians(-25));
-  p.rect(-4 * s, 0, 8 * s, 22 * s, 4 * s);
+  p.translate(shoulder.x, shoulder.y);
+  p.rotate(p.radians(armAngle));
+  p.rect(-4 * s, 0, 8 * s, handLen, 4 * s);
   p.pop();
+
+  const handOffset = dirFromAngle(p, armAngle, handLen);
+  const hand = { x: shoulder.x + handOffset.x, y: shoulder.y + handOffset.y };
+
+  // rod: reel + grip at the hand, a bowed shaft running out to the tip
+  const tipAngle = armAngle + rodBendDeg * 0.9;
+  const rodLen = 58 * s;
+  const tipOffset = dirFromAngle(p, tipAngle, rodLen);
+  const tip = { x: hand.x + tipOffset.x, y: hand.y + tipOffset.y };
+  const c1Offset = dirFromAngle(p, armAngle, rodLen * 0.35);
+  const c2Offset = dirFromAngle(p, tipAngle, rodLen * 0.35);
+  const c1 = { x: hand.x + c1Offset.x, y: hand.y + c1Offset.y };
+  const c2 = { x: tip.x - c2Offset.x, y: tip.y - c2Offset.y };
+
+  p.fill(30, 26, 22);
+  p.circle(hand.x, hand.y, 7 * s);
+  p.noFill();
+  p.stroke(60, 44, 30);
+  p.strokeWeight(Math.max(1, 2.6 * s));
+  p.bezier(hand.x, hand.y, c1.x, c1.y, c2.x, c2.y, tip.x, tip.y);
+  p.noStroke();
 
   // neck + head
   p.fill(character.skinTone);
@@ -92,6 +129,8 @@ function drawAngler(p, x, y, scale, character, opts = {}) {
   }
 
   p.pop();
+
+  return { x: x + tip.x * facing, y: y + tip.y };
 }
 
 function drawHair(p, character, s) {
